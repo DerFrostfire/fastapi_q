@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:15
+    container_name: dbws
+    environment:
+      POSTGRES_DB: chat
+      POSTGRES_USER: chat
+      POSTGRES_PASSWORD: chat
+    volumes:
+      - 'chat-pgsql:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - '${DB_DATABASE}'
+        - '-U'
+        - '${DB_USERNAME}'
+      retries: 3
+      timeout: 5s
+
+  app:
+    build:
+      context: .
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: chat
+      DB_USER: chat
+      DB_PASS: chat
+      URL_UNIQUE: "https://test.quniq.net/api/auth/me"
+      TEST_TOKEN: "5|YVAGTO17aES34skmTmZCAiB5yfa3zdDNcWnOzifV55725fa5"
+      #главный путь приложения
+      ROOT_PATH: "/apps/chat/api"
+      #ключ для тикетов
+      SECRET_KEY: "9|KdrylyOEqWyzefcoHL7Dv4rct3ho31LCjwruUI7L4f176318"
+    container_name: wsapp
+    ports:
+      - "9999:8000"
+    depends_on:
+      - db
+
+volumes:
+  chat-pgsql:
+    driver: local
+
+
+
