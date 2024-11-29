@@ -4,7 +4,7 @@ from src.attachment.schema import AttachmentItem
 from pydantic import conlist
 from typing import List, Any
 
-from src.attachment.utils import save_upload_file
+from src.attachment.utils import save_all_upload_files
 
 from sqlalchemy.exc import NoResultFound
 from src.auth.auth import auth
@@ -59,7 +59,7 @@ async def create_attachment(
         attachment, path_list = am.generate_new_properties(attachment)
 
         
-    await save_upload_file(files, path_list)
+    await save_all_upload_files(files, path_list)
 
     return attachment
 
