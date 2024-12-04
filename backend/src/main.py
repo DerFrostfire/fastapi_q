@@ -10,9 +10,8 @@ from src.config import setting
 
 app = FastAPI(root_path=setting.ROOT_PATH)
 
-app.include_router(ws)
-app.include_router(user)
-app.include_router(chat)
-app.include_router(auth_ws)
-app.include_router(attachment)
-app.include_router(message)
+endpoints = [ws, user, auth_ws, attachment, message]
+
+for endpoint in endpoints:
+    app.include_router(endpoint)
+
