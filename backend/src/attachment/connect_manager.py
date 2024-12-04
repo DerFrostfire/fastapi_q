@@ -35,5 +35,4 @@ class AttachmentManager:
           session.add(record)
         await session.commit()
 
-
 manager = AttachmentManager()
